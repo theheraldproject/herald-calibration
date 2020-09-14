@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <fragment
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/nav_graph" app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="0.0"/>
+    <Button
+            android:text="Back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/button3"
+            app:layout_constraintTop_toTopOf="@+id/nav_host_fragment" app:layout_constraintStart_toStartOf="parent"
+            android:onClick="goBack"/>
+    <TextView
+            android:text="Please select the distance for calibration:-"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/lblDistance"
+            app:layout_constraintTop_toBottomOf="@+id/button3" app:layout_constraintStart_toStartOf="parent"/>
+    <SeekBar
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:layout_width="403dp"
+            android:layout_height="30dp"
+            android:max="8"
+            android:progress="0"
+            android:id="@+id/seekDistance"
+            app:layout_constraintTop_toBottomOf="@+id/lblDistance" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+            android:text="0.1"
+            android:layout_width="121dp"
+            android:layout_height="20dp" android:id="@+id/textDistance"
+            app:layout_constraintStart_toEndOf="@+id/lblDistance" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/lblDistance"
+            app:layout_constraintBottom_toBottomOf="@+id/lblDistance"
+            android:textAlignment="textEnd"/>
+    <TextView
+            android:text="Please select a device for calibration:-"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/lblDevice"
+            app:layout_constraintTop_toBottomOf="@+id/seekDistance" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+    <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="363dp"
+            android:layout_height="113dp"
+            app:layout_constraintTop_toBottomOf="@+id/lblDevice" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" tools:itemCount="5" android:textAlignment="center"
+            android:id="@+id/recyclerDevice"/>
+    <Button
+            android:text="Start Calibration"
+            android:layout_width="207dp"
+            android:layout_height="49dp" android:id="@+id/butCalibrate"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerDevice" app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/butSave"/>
+    <Button
+            android:text="Save Data"
+            android:layout_width="194dp"
+            android:layout_height="46dp" android:id="@+id/butSave"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerDevice" app:layout_constraintEnd_toEndOf="parent"/>
+    <TextView
+            android:text="Readings Taken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView5"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/butCalibrate" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="Mean RSSI"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView6"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView5" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="Median RSSI"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView7"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView6" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="Modal RSSI"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView8"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView7" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="Variance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView9"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView8" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="0"
+            android:layout_width="181dp"
+            android:layout_height="20dp" android:id="@+id/textReadings"
+            android:textAlignment="textEnd" app:layout_constraintStart_toStartOf="@+id/butSave"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/butSave"/>
+    <TextView
+            android:text="0"
+            android:layout_width="181dp"
+            android:layout_height="20dp" android:id="@+id/textFPSkew"
+            android:textAlignment="textEnd" app:layout_constraintStart_toStartOf="@+id/butSave"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textStdDev"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+            android:text="-"
+            android:layout_width="181dp"
+            android:layout_height="20dp" android:id="@+id/textRemoteModel"
+            android:textAlignment="textEnd" app:layout_constraintStart_toStartOf="@+id/butSave"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textFPSkew"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+            android:text="-"
+            android:layout_width="181dp"
+            android:layout_height="20dp" android:id="@+id/textRemoteOS"
+            android:textAlignment="textEnd" app:layout_constraintStart_toStartOf="@+id/butSave"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textRemoteModel"
+    />
+    <TextView
+            android:text="-"
+            android:layout_width="181dp"
+            android:layout_height="20dp" android:id="@+id/textRemoteOSVer"
+            android:textAlignment="textEnd" app:layout_constraintStart_toStartOf="@+id/butSave"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textRemoteOS"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+            android:text="0"
+            android:layout_width="181dp"
+            android:layout_height="20dp" android:id="@+id/textStdDev"
+            android:textAlignment="textEnd" app:layout_constraintStart_toStartOf="@+id/butSave"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textVariance"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+            android:text="0"
+            android:layout_width="181dp"
+            android:layout_height="20dp" android:id="@+id/textMean"
+            android:textAlignment="textEnd" app:layout_constraintStart_toStartOf="@+id/butSave"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textReadings"
+            app:layout_constraintHorizontal_bias="1.0"/>
+    <TextView
+            android:text="0"
+            android:layout_width="181dp"
+            android:layout_height="20dp" android:id="@+id/textMedian"
+            android:textAlignment="textEnd" app:layout_constraintStart_toStartOf="@+id/butSave"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textMean"
+            app:layout_constraintHorizontal_bias="1.0"/>
+    <TextView
+            android:text="0"
+            android:layout_width="181dp"
+            android:layout_height="20dp" android:id="@+id/textMode"
+            android:textAlignment="textEnd" app:layout_constraintStart_toStartOf="@+id/butSave"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textMedian"
+    />
+    <TextView
+            android:text="0"
+            android:layout_width="181dp"
+            android:layout_height="20dp" android:id="@+id/textVariance"
+            android:textAlignment="textEnd" app:layout_constraintStart_toStartOf="@+id/butSave"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textMode"
+            app:layout_constraintHorizontal_bias="0.0"/>
+    <TextView
+            android:text="Standard Deviation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView15"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="FP Skewness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView16"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView15" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="Remote Model"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView17"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView16" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="Remote OS"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView18"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView17" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+    <TextView
+            android:text="Remote OS Ver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:id="@+id/textView19"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView18" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
