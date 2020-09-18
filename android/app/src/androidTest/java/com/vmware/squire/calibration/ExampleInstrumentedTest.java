@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  * Author: Adam Fowler adamf@vmware.com adam@adamfowler.org
  */
-package org.adamfowler.ble.calibration;
+package com.vmware.squire.calibration;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="org.adamfowler.ble.calibration">
+          package="com.vmware.squire.calibration">
 
     <application
             android:allowBackup="true"
@@ -10,11 +10,11 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name="org.adamfowler.ble.calibration.CalibrationActivity"
+                android:name="com.vmware.squire.calibration.CalibrationActivity"
                 android:label="@string/title_activity_calibration"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name="org.adamfowler.ble.calibration.MainActivity">
+        <activity android:name="com.vmware.squire.calibration.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
