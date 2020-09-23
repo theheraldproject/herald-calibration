@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  * Author: Adam Fowler adamf@vmware.com adam@adamfowler.org
  */
-package com.vmware.squire.calibration;
+package com.vmware.herald.calibration;
 
 import java.util.Optional;
 import java.util.UUID;
