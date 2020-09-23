@@ -8,3 +8,4 @@ Copyright 2020 VMware, Inc.
 
 Please visit the calibration website at: http://vmware.github.io/herald/bluetooth/distance
 
+See LICENSE.txt and NOTICE.txt for details.
