@@ -1,13 +1,17 @@
 /*
- * 1B - RGB LED and Ultrasound Sensor validation
- * Validate that the multi colour LED and ultrasound sensor are working
- * Create by Adam Fowler on 27/Sep/2020
- * Original sketch was written by SparkFun Electronics, with lots of help from the Arduino community.
+ * 2B - Ultrasound Sensor temperature calibration
+ * Correct ultrasound distance calculation for temperature of the air
+ * Create by Adam Fowler on 28/Sep/2020
+ * Original sketch for Improved Ultrasonic Range Sensing Created by Calvin Kielas-Jensen
+ *   https://www.instructables.com/id/Improve-Ultrasonic-Range-Sensor-Accuracy/
  * Copyright © 2020 VMware, Inc.
  * SPDX-License-Identifier: MIT
 */
 
 #include <NewPing.h>
+
+// Temperature
+const int tempPin = A3;
 
 // NewPing with sinlge pin operation for HC-SR04
 const int trigPin = 5;           //connects to the trigger pin on the distance sensor
@@ -51,13 +55,16 @@ void setup()
   analogWrite(redPin, 0);
   analogWrite(greenPin, 0);
   analogWrite(bluePin, 0);
+
+  // Set up temp pin
+  pinMode(tempPin, INPUT);
 }
 
 void loop() {
   distance = getDistance();   //variable to store the distance measured by the sensor
 
-  Serial.print(distance);     //print the distance that was measured
-  Serial.println(" cm");      //print units after the distance
+  //Serial.print(distance);     //print the distance that was measured
+  //Serial.println(" cm");      //print units after the distance
 
   if (distance <= 10) {                       //if the object is close
 
@@ -86,40 +93,34 @@ void loop() {
 
 //------------------FUNCTIONS-------------------------------
 
+float getVoltage(int pin) { 
+  return (analogRead(pin) * .004882814); 
+  //Converting from 0 to 1024 to 0 to 5v 
+}
+
+float millisecondsToCentimeters(float milliseconds, float temp) { 
+  return (milliseconds * (331.3 + 0.606 * temp)) / 2000.0f; // half the flight time, divided by 1000 for milliseconds
+  //Multiplying the speed of sound through a certain temperature of air by the 
+  //length of time it takes to reach the object and back, divided by two
+}
+
 float getDistance() {
   unsigned int echoTime;                   //variable to store the time it takes for a ping to bounce off an object
   float calculatedDistance;         //variable to store the distance calculated from the echo time
-  
+
+  float temperature = (getVoltage(tempPin) - 0.5) * 100;
   echoTime = sonar.ping_median(20); // uS
-  Serial.print("Echo time: ");
-  Serial.println(echoTime);
-  //pinMode(echoPin,OUTPUT);
-  //digitalWrite(echoPin,LOW);
-  //pinMode(echoPin,INPUT);
+  //Serial.print("Echo time: ");
+  //Serial.println(echoTime);
   
-  calculatedDistance = sonar.convert_cm(echoTime); // rounds to nearest cm
-  calculatedDistance = (1.0d * echoTime) / (1.0d * US_ROUNDTRIP_CM);
+  float oldCalculatedDistance = (1.0d * echoTime) / (1.0d * US_ROUNDTRIP_CM);
+  calculatedDistance = millisecondsToCentimeters(echoTime, temperature);
+  Serial.print("Uncorrected distance calculation: ");
+  Serial.print(oldCalculatedDistance);
+  Serial.print(" => ");
+  Serial.print(calculatedDistance);
+  Serial.print(" @ ");
+  Serial.print(temperature);
+  Serial.println(" deg C");
   return calculatedDistance;
-}
-
-//RETURNS THE DISTANCE MEASURED BY THE HC-SR04 DISTANCE SENSOR
-float getDistanceOld()
-{
-  float echoTime;                   //variable to store the time it takes for a ping to bounce off an object
-  float calculatedDistance;         //variable to store the distance calculated from the echo time
-
-  //send out an ultrasonic pulse that's 10ms long
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(50);
-  digitalWrite(trigPin, LOW);
-
-  echoTime = pulseIn(echoPin, HIGH);      //use the pulsein command to see how long it takes for the
-                                          //pulse to bounce back to the sensor
-  Serial.print("Echo time: ");
-  Serial.println(echoTime);
-
-  // 2.56 is so output is CM
-  calculatedDistance = echoTime / (148.0 * 2.56);  //calculate the distance of the object that reflected the pulse (half the bounce time multiplied by the speed of sound)
-
-  return calculatedDistance;              //send back the distance that was calculated
 }

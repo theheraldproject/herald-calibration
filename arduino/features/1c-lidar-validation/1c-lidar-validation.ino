@@ -1,6 +1,6 @@
 /*
  * 1C - LIDAR Lite v3 validation
- * Validate that your calibration robot's motors are working as expected
+ * Validate that your LIDAR unit is working as expected and giving accurate results
  * Create by Adam Fowler on 27/Sep/2020
  * Original sketch was written by SparkFun Electronics, with lots of help from the Arduino community.
  * Copyright © 2020 VMware, Inc.

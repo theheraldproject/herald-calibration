@@ -1,7 +1,7 @@
 /*
- * 2A - Wheel speed calibration using ultrasound sensor
- * Calibrate movement position through measuring distance after movement on the current surface
- * Create by Adam Fowler on 27/Sep/2020
+ * 2C - Find minimum reliable speed
+ * Calibrate minimum consistent wheel speed for this robot, weight, and surface
+ * Create by Adam Fowler on 28/Sep/2020
  * Original sketch was written by SparkFun Electronics, with lots of help from the Arduino community.
  * Copyright © 2020 VMware, Inc.
  * SPDX-License-Identifier: MIT
@@ -47,7 +47,8 @@ bool hasPrinted = false;
 
 bool speedIsCalibrated = false;
 
-int calibrationSpeed = 150;
+int calibrationSpeedInterval = 10;
+int calibrationSpeed = 0;
 float metresPerSecond = 0.1f;
 
 void setup()
@@ -86,7 +87,6 @@ void setup()
   analogWrite(bluePin, 0);
 
   // MOTOR
-  
   pinMode(switchPin, INPUT_PULLUP);   //set this as a pullup to sense whether the switch is flipped
 
   //set the motor control pins as outputs
@@ -98,6 +98,8 @@ void setup()
   pinMode(BIN2, OUTPUT);
   pinMode(PWMB, OUTPUT);
 
+  // Dummy initial readings (ultrasound initialisation issue)
+  getDistance();
 }
 
 void loop() {
@@ -120,10 +122,31 @@ void loop() {
 //------------------MID LEVEL FUNCTIONS-------------------------------
 
 void calibrateSpeed() {
+  // FIRST CALIBRATE MOVEMENT
+  Serial.println("Calibrating minimum reliable distance speed");
+  float distance = getDistance();
+  float newDistance;
+  do {
+    distance = newDistance;
+    calibrationSpeed += calibrationSpeedInterval;
+    calibrationSpeed = calibrationSpeed % 256;
+    spinMotors(calibrationSpeed);
+    delay(500);
+    newDistance = getDistance();
+  } while (abs(newDistance - distance) < 8); // pick something that's ~2 SDs from mean error
+  spinMotors(0);
+  distance = getDistance();
+  Serial.print("  Distance now: ");
+  Serial.println(distance);
+  Serial.print("  Calibration speed: ");
+  Serial.println(calibrationSpeed);
+
+  // Pause
   delay(2000);
+  
+  // NOW CALIBRATE SPEED
   Serial.println("Moving to 10cm (Naive)...");
   // Move to 10cm
-  float distance = getDistance();
   Serial.print("  Distance Currently: ");
   Serial.println(distance);
   Serial.println("  Moving forward...");
@@ -237,11 +260,22 @@ void yellow() {
 
 
 // ULTRASOUND
+float getVoltage(int pin) { 
+  return (analogRead(pin) * .004882814); 
+  //Converting from 0 to 1024 to 0 to 5v 
+}
+
+float millisecondsToCentimeters(float milliseconds, float temp) { 
+  return (milliseconds * (331.3 + 0.606 * temp)) / 20000.0f; // half the flight time, divided by 1000 for milliseconds
+  //Multiplying the speed of sound through a certain temperature of air by the 
+  //length of time it takes to reach the object and back, divided by two
+}
 
 double getDistanceInstant() {
   unsigned int echoTime;                   //variable to store the time it takes for a ping to bounce off an object
   double calculatedDistance;         //variable to store the distance calculated from the echo time
 
+  float temperature = (getVoltage(tempPin) - 0.5) * 100;
   echoTime = sonar.ping();
   //echoTime = sonar.ping_median(3); // few readings, for reading whilst moving
   //Serial.print("Echo time: ");
@@ -251,19 +285,9 @@ double getDistanceInstant() {
   //pinMode(echoPin,INPUT);
   
   //calculatedDistance = sonar.convert_cm(echoTime); // rounds to nearest cm
-  calculatedDistance = (1.0d * echoTime) / (1.0d * US_ROUNDTRIP_CM);
+  //calculatedDistance = (1.0d * echoTime) / (1.0d * US_ROUNDTRIP_CM);
+  calculatedDistance = millisecondsToCentimeters(echoTime, temperature);
   return calculatedDistance;
-}
-
-float getVoltage(int pin) { 
-  return (analogRead(pin) * .004882814); 
-  //Converting from 0 to 1024 to 0 to 5v 
-}
-
-float millisecondsToCentimeters(float milliseconds, float temp) { 
-  return (milliseconds * (331.3 + 0.606 * temp)) / 2000.0f; // half the flight time, divided by 1000 for milliseconds
-  //Multiplying the speed of sound through a certain temperature of air by the 
-  //length of time it takes to reach the object and back, divided by two
 }
 
 float getDistance() {
